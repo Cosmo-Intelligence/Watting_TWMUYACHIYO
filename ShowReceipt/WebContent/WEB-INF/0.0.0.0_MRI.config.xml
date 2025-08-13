@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+
+	<!-- 検査室パラメータ情報 -->
+	<!--
+		「,(カンマ)」は枠数に該当します。
+		「|(パイプ)」を使用し、一枠に設定する「検査種別ID:検査室ID」を複数設定できます。
+	 -->
+	<KensaSituParam>MRI:5001,MRI:5002,CH:5001</KensaSituParam>
+
+	<!-- 検査室未割当表示検査種別 -->
+	<!-- ※検査室が未割当(Null)でも表示する検査種別IDを設定して下さい。 -->
+	<MiwariateDispKensaType>CH</MiwariateDispKensaType>
+	
+	<!-- 更新周期（秒） -->
+	<ReloadSec>10</ReloadSec>
+
+	<!-- 検中メッセージ -->
+	<KenchuMsg>検査中</KenchuMsg>
+	
+	<!-- 準備中メッセージ -->
+	<JunbichuMsg>準備中</JunbichuMsg>
+
+	<!-- 受済メッセージ -->
+	<UkezumiMsg>以下の番号の方は、MRI検査が受付されました。&lt;br&gt; お声掛けいたしますので、椅子に掛けてお待ちください。</UkezumiMsg>
+
+	<!-- 受付番号の桁数 -->
+	<ReceiptNumberDigit>4</ReceiptNumberDigit>
+
+	<!-- 受付番号を補完する文字 -->
+	<ComplementChar>0</ComplementChar>
+
+	<!-- 本日検査日検索フラグ ※1:本日のみ  -->
+	<TodayFlg>1</TodayFlg>
+	
+	<!-- テロップメッセージ -->
+	<TelopMsg>テロップのメッセージです。</TelopMsg>
+	
+	<!-- 検済を表示対象外にする遅延時間（分） -->
+	<KenzumiElapsedTime>5</KenzumiElapsedTime>
+
+</Settings>

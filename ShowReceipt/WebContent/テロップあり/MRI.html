@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/application-mri.css">
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/knockout-3.3.0.js"></script>
+    <script src="js/async.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/comm.js"></script>
+    <script src="js/application-mri.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="h-container" style="height: 62px; background-color: #001f5f;">
+        <div class="row title" style="height: 62px; background-color: #001f5f; color: #ffff00; font-size: 46px;">
+          <p style="margin-left: 5px;">MRI待合表示</p>
+        </div>
+      <div class="row title" style="height: 62px; background-color: #001f5f; color: #ffff00; font-size: 46px;">
+        <p style="margin-right: 5px;">市立青梅総合医療センター</p>
+      </div>
+      </div>
+      <div class="row h-container" style="height: 100px; margin-top: 30px;">
+        <div class="text-left msg" style="width: 43%; margin-left: 30px; margin-top: 20px;" data-bind="text: kenchuMsg">
+        </div>
+        <div class="text-left msg" style="width: 57%; margin-top: 20px;" data-bind="text: junbichuMsg">
+        </div>
+      </div>
+      <!-- ko foreach: ko.utils.range(0, $root.KENCHU_ROW_COUNT - 1) -->
+      <div class="h-container" style="align-items: center; margin-bottom: 100px">
+        <div class="row h-container" style="width: 40%;">
+          <!-- ko foreach: ko.utils.range(0, $root.KENCHU_COL_COUNT - 1) -->
+          <div class="kenchu-box" style="width: 320px">
+            <div class="kenchu-number" data-bind="text: $root.kenchuArray()[$index()], attr: {id: $root.getKenchuElementId($index())}">
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div class="row h-container" style="width: 60%;">
+          <!-- ko foreach: ko.utils.range(0, $root.JUNBICHU_COL_COUNT - 1) -->
+          <div class="junbichu-box" style="width: 200px">
+            <div class="junbichu-number" data-bind="text: $root.junbichuArray()[$index()]">
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- /ko -->
+      <div class="row" style="margin: 10px 0 10px 0;">
+        <div class="h-container" style="margin-bottom: 80px;">
+          <div class="text-left msg" style="width: 65%;" data-bind="html: ukezumiMsg">
+          </div>
+          <div class="h-container" style="width: 35%;">
+            <div class="h-container" style="width: 50%;">
+              <div class="text-center" style="width: 70%; padding-top: 0.2em;">
+                待ち人数
+              </div>
+              <div class="text-right" style="width: 20%; background-color: #dce6f2; padding: 0 0.2em; margin-top: 0.2em" data-bind="text: Math.min(ukezumiArray().length, 99)">
+              </div>
+              <div class="text-center" style="width: 10%; padding-top: 0.2em;">
+                人
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ko foreach: ko.utils.range(0, $root.UKEZUMI_ROW_COUNT - 1) -->
+      <div class="row h-container" style="margin-bottom: 20px;">
+        <!-- ko foreach: ko.utils.range(0, $root.UKEZUMI_COL_COUNT - 1) -->
+        <div class="text-center ukezumi-number" data-bind="text: $root.getUkezumiNumber($parentContext.$index(), $index())">
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <div class="telop-container">
+        <span class="telop-text" data-bind="text: telopMsg"></span>
+      </div>
+      
+    </div>
+
+    <!-- ko with: errorModalDlg -->
+    <div class="modal" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-show="true" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog" style="padding-top: 15%">
+        <div class="modal-content">
+          <div class="modal-header" style="border-radius: 5px 5px 0px 0px; background-color: #d9534f; padding-top: 5px;padding-bottom: 5px;">
+          </div><!-- /modal-header -->
+          <div class="modal-body">
+            <p class="recipient" style="white-space: pre-wrap">処理中にエラーが発生しました。システム管理者にご連絡ください。</p>
+            <p />
+            <div class="row accordion-group" style="padding: 5px 20px 5px 20px">
+              <div class="accordion-heading">
+                <span class="accordion-toggle collapsed" data-toggle="collapse" href="#error" style="cursor: pointer">詳細</span>
+              </div>
+              <div id="error" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <div class="recipient" data-bind="text: error" style="white-space: pre-wrap"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+          </div>
+        </div> <!-- /.modal-content -->
+      </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+    <!-- /ko -->
+
+  </body>
+</html>
