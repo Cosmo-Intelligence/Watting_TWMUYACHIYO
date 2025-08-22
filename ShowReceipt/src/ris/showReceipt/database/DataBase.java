@@ -105,10 +105,13 @@ public class DataBase extends DataBaseCore {
 		sql += "   (";
 		sql += "     select";
 		//2023.09.19 Mod M.Furuya@Cosmo カラム名の変更 start
-		sql += "       PATIENTINFO.RECEIPTNUMBER_HIS RECEIPTNUMBER";
+		
+		//sql += "       PATIENTINFO.RECEIPTNUMBER_HIS RECEIPTNUMBER";
+		//2025.08.13 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 start
 		//sql += "       PATIENTINFO.RECEIPTNUMBER＿HIS RECEIPTNUMBER";
 		//2023.09.19 Mod M.Furuya@Cosmo カラム名の変更 end
-		sql += "       ,EM.EXAMENDDATE EXAMENDDATE";
+		sql += "       EM.EXAMENDDATE EXAMENDDATE";
+		//2025.08.13 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 end
 		sql += "       ,EM.RECEIPTNUMBER EM_RECEIPTNUMBER";
 		//2024.03.13 Add K.Kasama@Cosmo 表示番号条件変更 start
 		sql += "       ,PATIENTINFO.KANJA_NYUGAIKBN NYUGAIKBN";
@@ -620,4 +623,124 @@ public class DataBase extends DataBaseCore {
 
 		return Dat;
 	}
+	
+	//2025.08.15 Add Takahashi@COSMO start テロップメッセージ：メンテナンス対応
+	/**
+	 * テロップメッセージ情報取得
+	 * @param ipaddress  :IPアドレス
+	 * @param conn       :接続情報
+	 * @return
+	 * @throws Exception
+	 */
+	public static DataTable getWaittingTelop(String ipaddress, Connection conn) throws Exception {
+
+		DataTable Dat = null;
+
+		String sql = "";
+		ArrayList<Object> arglist = new ArrayList<Object>();
+
+		sql += " select";
+		sql += "   *";
+		sql += " from";
+		sql += "   WaittingTeroppuMaster";
+		sql += " where";
+		sql += "   IPADDRESS = ?";
+		
+		arglist.add(ipaddress);
+
+		Object[] args = new Object[arglist.size()];
+		arglist.toArray(args);
+
+		Dat = executeQuery(sql, args, conn);
+
+		return Dat;
+	}
+	
+	/**
+	 * テロップメッセージ更新
+	 * @param telopMsg1  :テロップメッセージ1
+	 * @param telopMsg2  :テロップメッセージ2
+	 * @param telopMsg3  :テロップメッセージ3
+	 * @param ipAddr     :IPアドレス
+	 * @param conn       :接続情報
+	 * @throws Exception
+	 */
+	public static boolean telopMsgUpdate(
+			String telopMsg1,
+			String telopMsg2,
+			String telopMsg3,
+			String ipAddr,
+			Connection conn) throws Exception {
+
+		String sql = "";
+		String where = "";
+		ArrayList<Object> arglist = new ArrayList<Object>();
+
+		sql += " update";
+		sql += "     WAITTINGTEROPPUMASTER";
+		sql += " set";
+		sql += "     TEROPPU1 = ?";
+		arglist.add(telopMsg1);
+		sql += "     ,TEROPPU2 = ?";
+		arglist.add(telopMsg2);
+		sql += "     ,TEROPPU3 = ?";
+		arglist.add(telopMsg3);
+
+		where += " where";
+		where += "     IPADDRESS = ?";
+		arglist.add(ipAddr);
+
+		sql += where;
+
+		Object[] args = new Object[arglist.size()];
+		arglist.toArray(args);
+
+		try {
+			executeSQL(sql, args, conn);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * テロップメッセージ区分更新
+	 * @param telopMsgFlg :テロップメッセージ区分
+	 * @param ipAddr      :IPアドレス
+	 * @param conn        :接続情報
+	 * @throws Exception
+	 */
+	public static boolean telopMsgFlgUpdate(
+			String telopMsgFlg,
+			String ipAddr,
+			Connection conn) throws Exception {
+
+		String sql = "";
+		String where = "";
+		ArrayList<Object> arglist = new ArrayList<Object>();
+
+		sql += " update";
+		sql += "     WAITTINGTEROPPUMASTER";
+		sql += " set";
+		sql += "     TEROPPUKBN = ?";
+		arglist.add(telopMsgFlg);
+
+		where += " where";
+		where += "     IPADDRESS = ?";
+		arglist.add(ipAddr);
+
+		sql += where;
+
+		Object[] args = new Object[arglist.size()];
+		arglist.toArray(args);
+
+		try {
+			executeSQL(sql, args, conn);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	//2025.08.15 Add Takahashi@COSMO end テロップメッセージ：メンテナンス対応
+	
 }

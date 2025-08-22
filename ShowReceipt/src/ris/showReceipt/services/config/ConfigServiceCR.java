@@ -20,8 +20,9 @@ public class ConfigServiceCR implements IConfigServiceKensaType{
 		config.setComplement_char(map.get("ComplementChar"));
 		config.setTodayFlg(map.get("TodayFlg"));
 		config.setMiwariatedisp_kensatype(map.get("MiwariateDispKensaType"));
-		config.setTelop_msg(map.get("TelopMsg"));
-		
+		//2025.08.20 Del Takahashi@COSMO start テロップメッセージ：メンテナンス対応
+		//config.setTelop_msg(map.get("TelopMsg"));
+		//2025.08.20 Del Takahashi@COSMO start テロップメッセージ：メンテナンス対応
 		return config;
 	}
 

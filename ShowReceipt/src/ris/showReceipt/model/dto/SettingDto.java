@@ -8,8 +8,11 @@ public class SettingDto extends BaseDto {
 	private String kenchu_msg;
 	private String Junbichu_msg;
 	private String ukezumi_msg;
-	private String telop_msg;
+	//2025.08.20 Mod Takahashi@COSMO start テロップメッセージ：メンテナンス対応
+	private List<String> telop_msg;
 	private List<String> kensasitu_array;
+	private int telop_flg;
+	//2025.08.20 Mod Takahashi@COSMO end テロップメッセージ：メンテナンス対応
 
 	public int getReload_sec() {
 		return reload_sec;
@@ -41,11 +44,19 @@ public class SettingDto extends BaseDto {
 	public void setKensasitu_array(List<String> kensasitu_array) {
 		this.kensasitu_array = kensasitu_array;
 	}
-	public String getTelop_msg() {
+	//2025.08.20 Mod Takahashi@COSMO start テロップメッセージ：メンテナンス対応
+	public List<String>  getTelop_msg() {
 		return telop_msg;
 	}
-	public void setTelop_msg(String telop_msg) {
+	public void setTelop_msg(List<String>  telop_msg) {
 		this.telop_msg = telop_msg;
 	}
+	public int getTelop_flg() {
+		return telop_flg;
+	}
+	public void setTelop_flg(int telop_flg) {
+		this.telop_flg = telop_flg;
+	}
+	//2025.08.20 Mod Takahashi@COSMO end テロップメッセージ：メンテナンス対応
 }
 

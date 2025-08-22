@@ -18,6 +18,7 @@
       <param-value>
         ris.showReceipt.rest.resources.SettingResource,
         ris.showReceipt.rest.resources.UpdateResource,
+        ris.showReceipt.rest.resources.TelopMsgSettingResource,
 
       </param-value>
     </init-param>

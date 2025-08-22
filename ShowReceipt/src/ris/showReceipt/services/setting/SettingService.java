@@ -1,6 +1,8 @@
 package ris.showReceipt.services.setting;
 
 import java.net.InetAddress;
+import java.sql.Connection;
+import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import ris.showReceipt.common.Config;
 import ris.showReceipt.common.Const;
 import ris.showReceipt.common.SessionControler;
+import ris.showReceipt.database.DataBase;
 import ris.showReceipt.model.dto.SettingDto;
+import ris.showReceipt.model.dto.WaittingTelopDto;
+import ris.showReceipt.util.DataTable;
 
 public class SettingService {
 	
@@ -52,7 +57,30 @@ public class SettingService {
 
 			//設定ファイル取り込み
 			Config config = new Config(settingServiceKensaType.getConfigKensaType()).getConfig(context, ipAddr);
+			
+			//2025.08.20 Add Takahashi@COSMO start テロップメッセージ：メンテナンス対応
+			// コネクション取得
+			Connection risconn = DataBase.getRisConnection();
 
+			// コネクション取得判定
+			if (risconn == null) {
+				dto.setResult(Const.RESULT_NG);
+				dto.setErrlevel(Const.ERRLEVEL_ERROR);
+				dto.setMsg("データベースへ接続できませんでした。");
+				return false;
+			}
+			
+			WaittingTelopDto waittingTelop = null;
+			
+			try {
+				
+				DataTable telopDt = DataBase.getWaittingTelop(ipAddr, risconn);
+				waittingTelop= setWaittingTelop(telopDt);
+			}finally {
+				DataBase.closeConnection(risconn);
+			}
+			//2025.08.20 Add Takahashi@COSMO end テロップメッセージ：メンテナンス対応
+			
 			// 更新周期取得失敗
 			if (StringUtils.isEmpty(config.getReload_sec())) {
 				dto.setResult(Const.RESULT_NG);
@@ -93,15 +121,31 @@ public class SettingService {
 				return false;
 			}
 			
+			//2025.08.15 Mod Takahashi@COSMO start テロップメッセージ：メンテナンス対応
 			// テロップメッセージ取得失敗
-			if (StringUtils.isEmpty(config.getTelop_msg())) {
+			if (StringUtils.isEmpty(waittingTelop.getTelop1())
+				||	StringUtils.isEmpty(waittingTelop.getTelop2())
+				||  StringUtils.isEmpty(waittingTelop.getTelop3())) {
 				dto.setResult(Const.RESULT_NG);
 				dto.setErrlevel(Const.ERRLEVEL_ERROR);
 				dto.setMsg("テロップメッセージが未設定です。");
 			}
 			
 			// テロップメッセージ設定
-			dto.setTelop_msg(config.getTelop_msg());
+			String[] telopMsgNameArray = {waittingTelop.getTelop1(),waittingTelop.getTelop2(),waittingTelop.getTelop3()};
+			dto.setTelop_msg(Arrays.asList(telopMsgNameArray));
+			
+			
+			// テロップメッセージ表示フラグ取得失敗
+			if (StringUtils.isEmpty(waittingTelop.getTelopKbn())) {
+				dto.setResult(Const.RESULT_NG);
+				dto.setErrlevel(Const.ERRLEVEL_ERROR);
+				dto.setMsg("テロップメッセージ表示フラグが未設定です。");
+			}
+			
+			// テロップメッセージ表示フラグ設定
+			dto.setTelop_flg(Integer.parseInt(waittingTelop.getTelopKbn()));
+			//2025.08.15 Mod Takahashi@COSMO end テロップメッセージ：メンテナンス対応
 
 			// 受付番号の桁数取得失敗
 			if (StringUtils.isEmpty(config.getReceipt_number_digit())) {
@@ -151,4 +195,28 @@ public class SettingService {
 
 		return result;
 	}
+	
+	//2025.08.20 Mod Takahashi@COSMO start テロップメッセージ：メンテナンス対応
+	/**
+	 * テロップメッセージ情報取得
+	 * @param dt     :テロップメッセージ詳細情報
+	 * @return
+	 * @throws Exception
+	 */
+	private WaittingTelopDto setWaittingTelop(DataTable dt) throws Exception {
+
+		WaittingTelopDto order = new WaittingTelopDto();
+
+		// オーダ情報設定
+		if (dt.getRowCount() >= 1) {
+			order.setIpaddress(dt.getRows().get(0).get("IPADDRESS").toString());
+			order.setTelopKbn(dt.getRows().get(0).get("TEROPPUKBN").toString());
+			order.setTelop1(dt.getRows().get(0).get("TEROPPU1").toString());
+			order.setTelop2(dt.getRows().get(0).get("TEROPPU2").toString());
+			order.setTelop3(dt.getRows().get(0).get("TEROPPU3").toString());
+		}
+
+		return order;
+	}
+	//2025.08.20 Mod Takahashi@COSMO end テロップメッセージ：メンテナンス対応
 }

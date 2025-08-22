@@ -17,7 +17,6 @@ import jakarta.servlet.ServletContext;
 import ris.showReceipt.services.config.IConfigServiceKensaType;
 import ris.showReceipt.util.Util;
 
-
 public class Config implements Serializable {
 	
 	private IConfigServiceKensaType configService;
@@ -38,11 +37,17 @@ public class Config implements Serializable {
 	private String miwariatedisp_kensatype;
 	private String telop_msg;
 	private String kenzumi_elapsed_Time;
+	//2025.08.20 Mod Takahashi@COSMO start テロップメッセージ：メンテナンス対応
+	private String telop_flg;
 	
 	
 	public Config(IConfigServiceKensaType configService) {
 		this.configService = configService;
 	}
+	
+	public Config() {
+	}
+	//2025.08.20 Mod Takahashi@COSMO end テロップメッセージ：メンテナンス対応
 
 	public String getReload_sec() {
 		return reload_sec;
@@ -138,6 +143,14 @@ public class Config implements Serializable {
 
 	public void setKenzumi_elapsed_Time(String kenzumi_elapsed_Time) {
 		this.kenzumi_elapsed_Time = kenzumi_elapsed_Time;
+	}
+	
+	public String getTelop_flg() {
+		return telop_flg;
+	}
+
+	public void setTelop_flg(String telop_flg) {
+		this.telop_flg = telop_flg;
 	}
 
 	/**

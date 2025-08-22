@@ -262,18 +262,21 @@ public class UpdateServiceCR {
 		}*/
 		String receiptNumber = "";
 		String nyugaikbn = dr.get("NYUGAIKBN").toString();
+		//2025.08.13 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 start
 		//外来の場合
-		if(nyugaikbn.equals("1"))
+		/*if(nyugaikbn.equals("1"))
 		{
 			receiptNumber = dr.get("RECEIPTNUMBER").toString();
 		}
 		//入院の場合は通常の受付番号
 		else if(nyugaikbn.equals("2"))
-		{
+		{*/
 			receiptNumber = dr.get("EM_RECEIPTNUMBER").toString();
-		}
+		//}
 
 		//2024.03.13 Mod K.Kasama@Cosmo 表示番号条件変更 end
+		//2025.08.13 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 end
+
 		return receiptNumber;
 		
 	}

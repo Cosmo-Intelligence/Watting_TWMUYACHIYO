@@ -19,10 +19,14 @@
     <div class="container">
       <div class="h-container" style="height: 62px; background-color: #001f5f;">
       <div class="row title" style="height: 62px; background-color: #001f5f; color: #ffff00; font-size: 46px;">
-        <p style="margin-left: 5px;">CT検査待合表示</p>
+		<!-- 2025.08.20 Mod Takahashi@COSMO start 東京女子医大八千代医療センター 待合表示機能対応 -->
+        <!--<p style="margin-left: 5px;">CT検査待合表示</p>-->
+        <button type="button" onclick=window.openSetting() class="btn btn-default" id="button1" style="height: 62px;width: 120px;opacity: 0;">ボタン1</button>
       </div>
       <div class="row title" style="height: 62px; background-color: #001f5f; color: #ffff00; font-size: 46px;">
-        <p style="margin-right: 5px;">市立青梅総合医療センター</p>
+        <!--<p style="margin-right: 5px;">市立青梅総合医療センター</p>-->
+        <button type="button"  onclick=window.openSetting() class="btn btn-default" id="button2"  style="height: 62px;width: 120px;opacity: 0;">ボタン2</button>
+        <!-- 2025.08.20 Mod Takahashi@COSMO end 東京女子医大八千代医療センター 待合表示機能対応 -->
       </div>
       </div>
       <div class="row h-container" style="height: 100px; margin: 0;">
@@ -71,7 +75,10 @@
       </div>
       <!-- /ko -->
       <div class="telop-container">
-        <span class="telop-text" data-bind="text: telopMsg"></span>
+		<!-- 2025.08.20 Mod Takahashi@COSMO start 東京女子医大八千代医療センター 待合表示機能対応 -->
+        <!-- <span class="telop-text" data-bind="text: telopMsg"></span> -->
+        <span class="telop-text" data-bind="text: $root.getTelopMsg()"></span>
+        <!-- 2025.08.20 Mod Takahashi@COSMO end 東京女子医大八千代医療センター 待合表示機能対応 -->
       </div>
 
     </div>
@@ -103,6 +110,66 @@
       </div> <!-- /.modal-dialog -->
     </div> <!-- /.modal -->
     <!-- /ko -->
-
+    
+    <!-- 2025.08.20 Mod Takahashi@COSMO start 東京女子医大八千代医療センター 待合表示機能対応 -->
+    <!-- ko with: telopMsgModalDlg -->
+    <div class="modal" id="telopMsgModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-show="true" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog" style="padding-top: 15%">
+        <div class="modal-content">
+          <div class="modal-header" style="border-radius: 5px 5px 0px 0px; background-color: #001f5f;display:flex">
+          	<div  style="width: 300px;background-color: #001f5f;color: #ffff00; padding-top: 5px;padding-bottom: 5px;text-align: left;font-size: 24px;">テロップエリア表示文設定</div>
+          	<div style="display: block;margin-left: auto;"><button type="button" onclick=window.closeTelopMsg() class="btn btn-default" data-dismiss="modal" >×</button></div>
+          </div><!-- /modal-header -->
+          	<div class="modal-body">
+				 <form name="form1">
+					<div class="modal-radio1" style="display:flex">
+						<div style="width: 500px;">
+				            <label><input type="radio" name="telop" value="0" data-bind="text: settingTelopMsg1" style="white-space: pre-wrap">
+				            <span data-bind="text: settingTelopMsg1"></span></label>
+						</div>
+			            <div style="display: block;margin-left: auto;"><button type="button" data-bind="click:window.showTelopMsgUpdateDialog.bind($data,settingTelopMsg1,settingTelopMsg2,settingTelopMsg3,1)" class="btn btn-default" data-dismiss="modal">編集</button></div>
+			        </div>
+			        <div class="modal-radio2" style="display:flex">
+						<div style="width: 500px;">
+				            <label><input type="radio" name="telop" value="1"  data-bind="text: settingTelopMsg2" style="white-space: pre-wrap">
+				            <span data-bind="text: settingTelopMsg2"></span></label>
+				        </div>
+			            <div style="display: block;margin-left: auto;"><button type="button" data-bind="click:window.showTelopMsgUpdateDialog.bind($data,settingTelopMsg1,settingTelopMsg2,settingTelopMsg3,2)"  class="btn btn-default" data-dismiss="modal">編集</button></div>
+		            </div>
+		            <div class="modal-radio3" style="display:flex">
+						<div style="width: 500px;">
+				            <label><input type="radio" name="telop" value="2"  data-bind="text: settingTelopMsg3" style="white-space: pre-wrap">
+				            <span data-bind="text: settingTelopMsg3"></span></label>
+						</div>
+			            <div style="display: block;margin-left: auto;"><button type="button" data-bind="click:window.showTelopMsgUpdateDialog.bind($data,settingTelopMsg1,settingTelopMsg2,settingTelopMsg3,3)"  class="btn btn-default" data-dismiss="modal">編集</button></div>
+					</div>
+				</form>
+			</div>
+        </div> <!-- /.modal-content -->
+      </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+    <!-- /ko -->
+    
+    <!-- ko with: telopMsgUpdateModalDlg -->
+    <div class="modal" id="telopMsgUpdateModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-show="true" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog" style="padding-top: 15%">
+        <div class="modal-content">
+          <div class="modal-header" style="border-radius: 5px 5px 0px 0px; background-color: #001f5f;display:flex">
+          	<div  style="width: 200px;background-color: #001f5f;color: #ffff00; padding-top: 5px;padding-bottom: 5px;text-align: left;font-size: 24px;">メッセージ編集</div>
+          	<div style="display: block;margin-left: auto;"><button type="button" onclick=window.closeTelopMsgUpdate() class="btn btn-default" data-dismiss="modal" >×</button></div>
+          </div><!-- /modal-header -->
+          	<div class="modal-body">
+				 <input type="text" id="updateTelopText" size="60" style="line-height: 3;" data-bind="value: UpdateTelopMsg"/>
+			</div>
+		  <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-bind="click:window.telopMsgUpdate.bind($data,UpdateTelopMsg,UpdateTelopMsg1,UpdateTelopMsg2,UpdateTelopMsg3,updateFlg)" data-dismiss="modal">OK</button>
+            <button type="button" onclick=window.closeTelopMsgUpdate() class="btn btn-default" data-dismiss="modal">閉じる</button>
+          </div>
+        </div> <!-- /.modal-content -->
+      </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+    <!-- /ko -->
+    <!-- 2025.08.20 Mod Takahashi@COSMO end 東京女子医大八千代医療センター 待合表示機能対応 -->
+    
   </body>
 </html>

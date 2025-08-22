@@ -10,7 +10,7 @@
 		「,(カンマ)」は枠数に該当します。
 		「|(パイプ)」を使用し、一枠に設定する「検査種別ID:検査室ID」を複数設定できます。
 	 -->
-	<KensaSituParam>V:RG01|U:RG01,R:AG02</KensaSituParam>
+	<KensaSituParam>01:101,R:AG02</KensaSituParam>
 
 	<!-- 検査室未割当表示検査種別 -->
 	<!-- ※検査室が未割当(Null)でも表示する検査種別IDを設定して下さい。 -->
