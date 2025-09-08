@@ -329,8 +329,10 @@ public class DataBase extends DataBaseCore {
 
 		sql += "           where";
 		sql += "             STATUS = 10";
-		//sql += "           and";
-		//sql += "             RECEIPTNUMBER IS NOT NULL";
+		//2025.09.08 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 start
+		sql += "           and";
+		sql += "             RECEIPTNUMBER IS NOT NULL";
+		//2025.09.08 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 end
 		// 本日フラグが[1]の場合は、システム日付と同じ検査日を対象とする
 		if ("1".equals(todayflg)) {
 			sql += "           and";

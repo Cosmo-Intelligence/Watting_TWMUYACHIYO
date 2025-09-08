@@ -57,9 +57,11 @@
               人
             </div>
           </div>
-          <div style="text-align: right; margin-right: 30px">
+          <!-- 2025.09.08 Del Takahashi@COSMO start 東京女子医大八千代医療センター 待合表示機能対応 -->
+          <!--<div style="text-align: right; margin-right: 30px">
             不在番号
-          </div>
+          </div>-->
+          <!-- 2025.09.08 Del Takahashi@COSMO end 東京女子医大八千代医療センター 待合表示機能対応 -->
         </div>
       </div>
       <!-- ko foreach: ko.utils.range(0, $root.UKEZUMI_ROW_COUNT - 1) -->
@@ -67,11 +69,13 @@
         <!-- ko foreach: ko.utils.range(0, $root.UKEZUMI_COL_COUNT - 1) -->
         <div class="text-center ukezumi-number" data-bind="text: $root.getUkezumiNumber($parentContext.$index(), $index())">
         </div>
+        <!-- 2025.09.08 Del Takahashi@COSMO start 東京女子医大八千代医療センター 待合表示機能対応 -->
         <!-- /ko -->
         <!-- ko foreach: ko.utils.range(0, $root.UKEZUMI_FUZAI_COL_COUNT - 1) -->
-        <div class="text-center ukezumi-number" data-bind="text: $root.getUkezumiFuzaiNumber($parentContext.$index(), $index())">
-        </div>
+        <!--<div class="text-center ukezumi-number" data-bind="text: $root.getUkezumiFuzaiNumber($parentContext.$index(), $index())">
+        </div>-->
         <!-- /ko -->
+        <!-- 2025.09.08 Del Takahashi@COSMO end 東京女子医大八千代医療センター 待合表示機能対応 -->
       </div>
       <!-- /ko -->
       <div class="telop-container">
