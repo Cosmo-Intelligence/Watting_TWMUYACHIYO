@@ -110,9 +110,8 @@ public class DataBase extends DataBaseCore {
 		//2025.08.13 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 start
 		//sql += "       PATIENTINFO.RECEIPTNUMBER＿HIS RECEIPTNUMBER";
 		//2023.09.19 Mod M.Furuya@Cosmo カラム名の変更 end
-		sql += "       EM.EXAMENDDATE EXAMENDDATE";
+		sql += "       EM.RECEIPTNUMBER EM_RECEIPTNUMBER";
 		//2025.08.13 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 end
-		sql += "       ,EM.RECEIPTNUMBER EM_RECEIPTNUMBER";
 		//2024.03.13 Add K.Kasama@Cosmo 表示番号条件変更 start
 		sql += "       ,PATIENTINFO.KANJA_NYUGAIKBN NYUGAIKBN";
 		//2024.03.13 Add K.Kasama@Cosmo 表示番号条件変更 end
@@ -127,6 +126,10 @@ public class DataBase extends DataBaseCore {
 		sql += "           EXMAINTABLE";
 		sql += "         where";
 		sql += "           STATUS = 20";
+		//2025.09.08 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 start
+		sql += "         and";
+		sql += "           RECEIPTNUMBER IS NOT NULL";
+		//2025.09.08 Mod R.Takahashi@Cosmo 受付番号 表示制御変更 end
 		// 本日フラグが[1]の場合は、システム日付と同じ検査日を対象とする
 		if ("1".equals(todayflg)) {
 			sql += "     and";
